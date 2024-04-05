@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Website</h1>
+        <p id="question"></p>
+        <div id="options" class="options"></div>
+        <button id="previous-btn" onclick="previousQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+    <script>
+        const quizData = [
+        {
+            question: "What is the capital of France?",
+            options: ["Paris", "London", "Berlin", "Madrid"],
+            answer: "Paris"
+        },
+        {
+            question: "What is the largest planet in our solar system?",
+            options: ["Jupiter", "Saturn", "Neptune", "Earth"],
+            answer: "Jupiter"
+        },
+        {
+            question: "What is the largest mammal in the world?",
+            options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+            answer: "Blue Whale"
+        },
+        {
+            question: "Which country is known as the Land of the Rising Sun?",
+            options: ["China", "Japan", "South Korea", "Vietnam"],
+            answer: "Japan"
+        }
+    ];
+    
+    let currentQuestion = 0;
+    let shuffledQuestions = shuffleArray(quizData);
+    
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const previousButton = document.getElementById("previous-btn");
+    
+    function loadQuestion() {
+        questionElement.textContent = shuffledQuestions[currentQuestion].question;
+    
+        optionsElement.innerHTML = "";
+        shuffledQuestions[currentQuestion].options.forEach(option => {
+            const button = document.createElement("button");
+            button.textContent = option;
+            button.addEventListener("click", checkAnswer);
+            optionsElement.appendChild(button);
+        });
+    
+        if (currentQuestion === 0) {
+            previousButton.disabled = true;
+        } else {
+            previousButton.disabled = false;
+        }
+    }
+    
+    function checkAnswer(event) {
+        const selectedButton = event.target;
+        const correctAnswer = shuffledQuestions[currentQuestion].answer;
+    
+        if (selectedButton.textContent === correctAnswer) {
+            selectedButton.style.backgroundColor = "#19fc24";
+            alert("Correct answer!");
+           // nextQuestion();
+        } else {
+            alert("Wrong answer. Try again!");
+        }
+    }
+    
+    function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < shuffledQuestions.length) {
+            loadQuestion();
+        } else {
+            alert("Quiz completed!");
+            currentQuestion = 0;
+            shuffledQuestions = shuffleArray(quizData);
+        }
+    }
+    
+    function previousQuestion() {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            loadQuestion();
+        } else {
+            alert("This is the first question.");
+        }
+    }
+    
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+    
+    loadQuestion();
+    
+
+
+    </script>
+</body>
+
+</html>
