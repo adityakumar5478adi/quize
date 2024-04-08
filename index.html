@@ -44,6 +44,12 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .battery{
+            position:absolute;
+            bottom:0;
+            left:0;
+        }
     </style>
 </head>
 
@@ -143,8 +149,20 @@
     
     loadQuestion();
     
+    </script>
 
-
+    <div class="battery">
+        <h2>Battery: <span id="batteryLevel">0%</span></h2>
+    </div>
+    <script>
+        const batteryLevel = document.getElementById('batteryLevel');
+        navigator.getBattery().then(battery => {
+            const update = ()=>{
+                batteryLevel.textContent = `${Math.round(battery.leve * 100)}`;
+            }
+            update();
+            battery.addEventListener('levelchange', update)
+        });
     </script>
 </body>
 
